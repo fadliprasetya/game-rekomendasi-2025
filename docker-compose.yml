@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  app:
+    image: laravelsail/php82-composer
+    container_name: game-app
+    ports:
+      - 8000:8000
+    volumes:
+      - ./src:/var/www/html
+    working_dir: /var/www/html
+    command: php artisan serve --host=0.0.0.0 --port=8000
+    depends_on:
+      - mysql
+
+  mysql:
+    image: mysql:8.0
+    container_name: game-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: gamedb
+    ports:
+      - 3308:3306  # ← perhatikan ini hanya satu baris
+    volumes:
+      - dbdata:/var/lib/mysql
+
+volumes:
+  dbdata:
